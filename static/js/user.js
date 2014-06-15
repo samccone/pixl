@@ -16,12 +16,14 @@
 
     User.prototype.draw = function() {
       var _ref;
-      return (_ref = this.board).addPixel.apply(_ref, __slice.call(this.position).concat([false], [this.color]));
+      (_ref = this.board).addPixel.apply(_ref, __slice.call(this.position).concat([false], [this.color]));
+      return this;
     };
 
     User.prototype.updatePosition = function(x, y) {
       this.lastPosition = this.position;
-      return this.position = [x, y];
+      this.position = [x, y];
+      return this;
     };
 
     User.prototype.move = function(x, y) {
@@ -49,8 +51,7 @@
       if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
         this.board.removePixel.apply(this.board, newPos);
       }
-      this.move.apply(this, newPos);
-      return this.fall();
+      return this.move.apply(this, newPos).fall();
     };
 
     User.prototype.moveLeft = function() {
@@ -59,7 +60,7 @@
       if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
         this.board.removePixel.apply(this.board, newPos);
       }
-      return this.move.apply(this, newPos) && this.fall();
+      return this.move.apply(this, newPos).fall();
     };
 
     User.prototype.moveRight = function() {
@@ -68,7 +69,7 @@
       if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
         this.board.removePixel.apply(this.board, newPos);
       }
-      return this.move.apply(this, newPos) && this.fall();
+      return this.move.apply(this, newPos).fall();
     };
 
     User.prototype.canMoveUp = function() {
@@ -80,8 +81,7 @@
         return;
       }
       this.board.addPixel(this.position[0], this.position[1], false, this.color);
-      this.updatePosition(this.position[0], this.position[1] - 1);
-      return this.draw();
+      return this.updatePosition(this.position[0], this.position[1] - 1).draw();
     };
 
     User.prototype.fall = function() {

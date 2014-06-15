@@ -9,10 +9,12 @@ class window.User
 
   draw: ->
     @board.addPixel @position..., false, @color
+    @
 
   updatePosition: (x, y) ->
     @lastPosition = @position
     @position = [x, y]
+    @
 
   move: (x, y) ->
     return unless @board.isValid(x, y)
@@ -34,8 +36,9 @@ class window.User
     if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
       @board.removePixel.apply(@board, newPos)
 
-    @move.apply(@, newPos)
-    @fall()
+    @move
+    .apply(@, newPos)
+    .fall()
 
   moveLeft  : ->
     newPos = [@position[0]-1, @position[1]]
@@ -43,7 +46,9 @@ class window.User
     if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
       @board.removePixel.apply(@board, newPos)
 
-    @move.apply(@, newPos) and @fall()
+    @move
+    .apply(@, newPos)
+    .fall()
 
   moveRight : ->
     newPos = [@position[0]+1, @position[1]]
@@ -51,7 +56,9 @@ class window.User
     if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
       @board.removePixel.apply(@board, newPos)
 
-    @move.apply(@, newPos) and @fall()
+    @move
+    .apply(@, newPos)
+    .fall()
 
   canMoveUp: ->
     # top or top left, or top right or
@@ -73,8 +80,8 @@ class window.User
     return unless @board.isValid(@position[0], @position[1]-1)
 
     @board.addPixel @position[0], @position[1], false, @color
-    @updatePosition @position[0], @position[1]-1
-    @draw()
+    @updatePosition(@position[0], @position[1]-1)
+    .draw()
 
   fall: ->
     @moveDown() while !@canMoveUp() and @board.isValid(@position[0], @position[1]+1)
