@@ -43,11 +43,11 @@
     };
 
     User.prototype.moveLeft = function() {
-      return this.fall() && this.move(this.position[0] - 1, this.position[1]);
+      return this.move(this.position[0] - 1, this.position[1]) && this.fall();
     };
 
     User.prototype.moveRight = function() {
-      return this.fall() && this.move(this.position[0] + 1, this.position[1]);
+      return this.move(this.position[0] + 1, this.position[1]) && this.fall();
     };
 
     User.prototype.canMoveUp = function() {

@@ -23,8 +23,8 @@ class window.User
 
   moveUp    : -> @canMoveUp() and  @move @position[0], @position[1]-1
   moveDown  : -> @move @position[0], @position[1]+1
-  moveLeft  : -> @fall() and @move(@position[0]-1, @position[1])
-  moveRight : -> @fall() and @move(@position[0]+1, @position[1])
+  moveLeft  : -> @move(@position[0]-1, @position[1]) and @fall()
+  moveRight : -> @move(@position[0]+1, @position[1]) and @fall()
 
   canMoveUp: ->
     # left or right occupied
