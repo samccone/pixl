@@ -8,6 +8,12 @@ class window.User
     @fall()
     @draw @positions...
 
+    # blink player
+    setInterval (=>
+      @board.removePixel(@position..., false)
+      setTimeout (=>@draw()), 500
+    ), 1000
+
   draw: ->
     @board.addPixel @position..., false, @color
     @

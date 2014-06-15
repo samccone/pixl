@@ -9,7 +9,7 @@
   },
   "name": "pixl",
   "subdomain": "pixl",
-  "version": "0.0.0-6",
+  "version": "0.0.0-7",
   "engines": {
     "node": "0.10.x"
   }

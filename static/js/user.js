@@ -4,12 +4,20 @@
 
   window.User = (function() {
     function User(_arg) {
+      var _this = this;
       this.board = _arg.board, this.color = _arg.color;
       this.position = [this.board.width / 4, 0];
       this.lastPosition = [this.board.width / 4, 0];
       this.addListeners();
       this.fall();
       this.draw.apply(this, this.positions);
+      setInterval((function() {
+        var _ref;
+        (_ref = _this.board).removePixel.apply(_ref, __slice.call(_this.position).concat([false]));
+        return setTimeout((function() {
+          return _this.draw();
+        }), 500);
+      }), 1000);
     }
 
     User.prototype.draw = function() {
