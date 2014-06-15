@@ -21,6 +21,7 @@ class window.Board
   removePixel: (x, y, silent=false) ->
     @ctx.clearRect x * @pixel, y * @pixel, @pixel, @pixel
     @backing[@getPixel(arguments...)] = 0
+
     socket.emit("removePixel", {x: x, y: y}) unless silent
 
   addPixel: (x, y, silent=false, color="#000") ->
@@ -40,4 +41,3 @@ class window.Board
 
   isValid: (x, y) ->
     @isWithinBounds(arguments...) and @isEmpty(arguments...)
-
