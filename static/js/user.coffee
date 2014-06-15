@@ -23,8 +23,21 @@ class window.User
 
   moveUp    : -> @canMoveUp() and  @move @position[0], @position[1]-1
   moveDown  : -> @move @position[0], @position[1]+1
-  moveLeft  : -> @move(@position[0]-1, @position[1]) and @fall()
-  moveRight : -> @move(@position[0]+1, @position[1]) and @fall()
+  moveLeft  : ->
+    newPos = [@position[0]-1, @position[1]]
+
+    if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
+      @board.removePixel.apply(@board, newPos)
+
+    @move.apply(@, newPos) and @fall()
+
+  moveRight : ->
+    newPos = [@position[0]+1, @position[1]]
+
+    if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
+      @board.removePixel.apply(@board, newPos)
+
+    @move.apply(@, newPos) and @fall()
 
   canMoveUp: ->
     # left or right occupied

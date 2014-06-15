@@ -43,11 +43,21 @@
     };
 
     User.prototype.moveLeft = function() {
-      return this.move(this.position[0] - 1, this.position[1]) && this.fall();
+      var newPos;
+      newPos = [this.position[0] - 1, this.position[1]];
+      if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
+        this.board.removePixel.apply(this.board, newPos);
+      }
+      return this.move.apply(this, newPos) && this.fall();
     };
 
     User.prototype.moveRight = function() {
-      return this.move(this.position[0] + 1, this.position[1]) && this.fall();
+      var newPos;
+      newPos = [this.position[0] + 1, this.position[1]];
+      if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
+        this.board.removePixel.apply(this.board, newPos);
+      }
+      return this.move.apply(this, newPos) && this.fall();
     };
 
     User.prototype.canMoveUp = function() {
