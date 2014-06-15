@@ -1,20 +1,34 @@
 canvas        = document.getElementById("app")
-canvas.width  = 400
-canvas.height = 400
-PIXEL = 5
-ctx = canvas.getContext("2d")
+PIXEL         = 5
+ctx           = null
 
-window.ctx = ctx
+socket.on "setup", ({width, height, backing}) ->
+  canvas.width  = width
+  canvas.height = height
+
+  ctx = canvas.getContext("2d")
+
+  BOARD = new Board(canvas.width, canvas.height, backing)
+
+  USER = new User({
+    board: BOARD
+  })
 
 class Board
-  constructor: (@width, @height) ->
-    @backing = new Uint8ClampedArray(@width*@height)
+  constructor: (@width, @height, backing) ->
+    @backing = new Uint8ClampedArray(backing)
 
+    @reDraw()
     socket.on("addPixel", ({x, y}) => @addPixel(x, y, true))
     socket.on("removePixel", ({x, y}) => @removePixel(x, y, true))
 
+  reDraw: ->
+    for i in [0...@backing.length]
+      if (@backing[i])
+        @addPixel((i) % @width, Math.floor((i) / @width))
+
   getPixel: (x, y) ->
-    x + (y * @width)
+    p = x + (y * @width)
 
   removePixel: (x, y, silent=false) ->
     ctx.clearRect x * PIXEL, y * PIXEL, PIXEL, PIXEL
@@ -93,9 +107,3 @@ class User
           @dig()
         when 88
           @drop()
-
-window.BOARD = BOARD = new Board(canvas.width, canvas.height)
-
-USER = new User({
-  board: BOARD
-})

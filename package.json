@@ -5,5 +5,11 @@
   },
   "scripts": {
     "start": "node app"
+  },
+  "name": "pixl",
+  "subdomain": "pixl",
+  "version": "0.0.0-1",
+  "engines": {
+    "node": "0.10.x"
   }
 }
