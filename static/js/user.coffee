@@ -21,8 +21,22 @@ class window.User
     @board.removePixel @lastPosition...
     @draw()
 
-  moveUp    : -> @canMoveUp() and  @move @position[0], @position[1]-1
-  moveDown  : -> @move @position[0], @position[1]+1
+  moveUp    : ->
+    newPos = [@position[0], @position[1]-1]
+
+    if (@canMoveUp())
+      @board.removePixel.apply(@board, newPos)
+      @move.apply(@, newPos)
+
+  moveDown  : ->
+    newPos = [@position[0], @position[1]+1]
+
+    if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
+      @board.removePixel.apply(@board, newPos)
+
+    @move.apply(@, newPos)
+    @fall()
+
   moveLeft  : ->
     newPos = [@position[0]-1, @position[1]]
 
@@ -40,9 +54,13 @@ class window.User
     @move.apply(@, newPos) and @fall()
 
   canMoveUp: ->
+    # top or top left, or top right or
     # left or right occupied
     (
-      !@board.isEmpty(@position[0]-1, @position[1]) or
+      !@board.isEmpty(@position[0],   @position[1]-1) or
+      !@board.isEmpty(@position[0]-1, @position[1]-1) or
+      !@board.isEmpty(@position[0]+1, @position[1]-1) or
+      !@board.isEmpty(@position[0]-1, @position[1])   or
       !@board.isEmpty(@position[0]+1, @position[1])
     ) or
     # at the left or right of board
@@ -50,12 +68,6 @@ class window.User
       !@board.isWithinBounds(@position[0]-1, @position[1]) or
       !@board.isWithinBounds(@position[0]+1, @position[1])
     )
-
-  dig       : ->
-    return if @board.isEmpty(@position[0], @position[1]+1)
-
-    @board.removePixel(@position[0], @position[1]+1)
-    @fall()
 
   drop      : ->
     return unless @board.isValid(@position[0], @position[1]-1)
@@ -65,7 +77,7 @@ class window.User
     @draw()
 
   fall: ->
-    @moveDown() while @board.isValid(@position[0], @position[1]+1)
+    @moveDown() while !@canMoveUp() and @board.isValid(@position[0], @position[1]+1)
 
   addListeners: ->
     window.addEventListener "keydown", (e) =>
@@ -78,7 +90,5 @@ class window.User
           @moveUp()
         when 40
           @moveDown()
-        when 90
-          @dig()
         when 88
           @drop()

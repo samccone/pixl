@@ -35,11 +35,22 @@
     };
 
     User.prototype.moveUp = function() {
-      return this.canMoveUp() && this.move(this.position[0], this.position[1] - 1);
+      var newPos;
+      newPos = [this.position[0], this.position[1] - 1];
+      if (this.canMoveUp()) {
+        this.board.removePixel.apply(this.board, newPos);
+        return this.move.apply(this, newPos);
+      }
     };
 
     User.prototype.moveDown = function() {
-      return this.move(this.position[0], this.position[1] + 1);
+      var newPos;
+      newPos = [this.position[0], this.position[1] + 1];
+      if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
+        this.board.removePixel.apply(this.board, newPos);
+      }
+      this.move.apply(this, newPos);
+      return this.fall();
     };
 
     User.prototype.moveLeft = function() {
@@ -61,15 +72,7 @@
     };
 
     User.prototype.canMoveUp = function() {
-      return (!this.board.isEmpty(this.position[0] - 1, this.position[1]) || !this.board.isEmpty(this.position[0] + 1, this.position[1])) || (!this.board.isWithinBounds(this.position[0] - 1, this.position[1]) || !this.board.isWithinBounds(this.position[0] + 1, this.position[1]));
-    };
-
-    User.prototype.dig = function() {
-      if (this.board.isEmpty(this.position[0], this.position[1] + 1)) {
-        return;
-      }
-      this.board.removePixel(this.position[0], this.position[1] + 1);
-      return this.fall();
+      return (!this.board.isEmpty(this.position[0], this.position[1] - 1) || !this.board.isEmpty(this.position[0] - 1, this.position[1] - 1) || !this.board.isEmpty(this.position[0] + 1, this.position[1] - 1) || !this.board.isEmpty(this.position[0] - 1, this.position[1]) || !this.board.isEmpty(this.position[0] + 1, this.position[1])) || (!this.board.isWithinBounds(this.position[0] - 1, this.position[1]) || !this.board.isWithinBounds(this.position[0] + 1, this.position[1]));
     };
 
     User.prototype.drop = function() {
@@ -84,7 +87,7 @@
     User.prototype.fall = function() {
       var _results;
       _results = [];
-      while (this.board.isValid(this.position[0], this.position[1] + 1)) {
+      while (!this.canMoveUp() && this.board.isValid(this.position[0], this.position[1] + 1)) {
         _results.push(this.moveDown());
       }
       return _results;
@@ -102,8 +105,6 @@
             return _this.moveUp();
           case 40:
             return _this.moveDown();
-          case 90:
-            return _this.dig();
           case 88:
             return _this.drop();
         }
