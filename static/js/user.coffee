@@ -4,6 +4,7 @@ class window.User
 
   constructor: ({@board, @color}) ->
     @addListeners()
+    @fall()
     @draw @positions...
 
   draw: ->
@@ -14,7 +15,7 @@ class window.User
     @position = [x, y]
 
   move: (x, y) ->
-    return unless @board.isValid(x, y)
+    return unless @board.isConnected(x, y) and @board.isValid(x, y)
 
     @updatePosition arguments...
     @board.removePixel @lastPosition...

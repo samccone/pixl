@@ -10,6 +10,7 @@
     function User(_arg) {
       this.board = _arg.board, this.color = _arg.color;
       this.addListeners();
+      this.fall();
       this.draw.apply(this, this.positions);
     }
 
@@ -25,7 +26,7 @@
 
     User.prototype.move = function(x, y) {
       var _ref;
-      if (!this.board.isValid(x, y)) {
+      if (!(this.board.isConnected(x, y) && this.board.isValid(x, y))) {
         return;
       }
       this.updatePosition.apply(this, arguments);

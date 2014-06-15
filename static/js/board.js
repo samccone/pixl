@@ -94,6 +94,10 @@
       return this.isWithinBounds.apply(this, arguments) && this.isEmpty.apply(this, arguments);
     };
 
+    Board.prototype.isConnected = function(x, y) {
+      return true;
+    };
+
     return Board;
 
   })();
