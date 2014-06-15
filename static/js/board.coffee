@@ -41,5 +41,3 @@ class window.Board
 
   isValid: (x, y) ->
     @isWithinBounds(arguments...) and @isEmpty(arguments...)
-
-  isConnected: (x, y) -> true
