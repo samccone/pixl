@@ -1,10 +1,11 @@
 {
   "dependencies": {
-    "socket.io": "~1.0.4",
-    "express": "~4.4.3"
+    "coffee-script": "^1.7.1",
+    "express": "~4.4.3",
+    "socket.io": "~1.0.4"
   },
   "scripts": {
-    "start": "node app"
+    "start": "coffee app.coffee"
   },
   "name": "pixl",
   "subdomain": "pixl",
