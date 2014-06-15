@@ -1,8 +1,9 @@
 class window.User
-  position: [0, 0]
-  lastPosition: [0, 0]
 
   constructor: ({@board, @color}) ->
+    @position     = [@board.width/4, 0]
+    @lastPosition = [@board.width/4, 0]
+
     @addListeners()
     @fall()
     @draw @positions...

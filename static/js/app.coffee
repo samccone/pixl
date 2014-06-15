@@ -1,5 +1,5 @@
 canvas        = document.getElementById("app")
-PIXEL         = 1
+PIXEL         = 2
 ctx           = null
 
 socket.on "setup", ({width, height, backing, color, colors}) ->

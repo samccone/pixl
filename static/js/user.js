@@ -3,12 +3,10 @@
   var __slice = [].slice;
 
   window.User = (function() {
-    User.prototype.position = [0, 0];
-
-    User.prototype.lastPosition = [0, 0];
-
     function User(_arg) {
       this.board = _arg.board, this.color = _arg.color;
+      this.position = [this.board.width / 4, 0];
+      this.lastPosition = [this.board.width / 4, 0];
       this.addListeners();
       this.fall();
       this.draw.apply(this, this.positions);

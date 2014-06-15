@@ -4,7 +4,7 @@
 
   canvas = document.getElementById("app");
 
-  PIXEL = 1;
+  PIXEL = 2;
 
   ctx = null;
 
