@@ -58,6 +58,9 @@
     };
 
     User.prototype.drop = function() {
+      if (!this.board.isValid(this.position[0], this.position[1] - 1)) {
+        return;
+      }
       this.board.addPixel(this.position[0], this.position[1], false, this.color);
       this.updatePosition(this.position[0], this.position[1] - 1);
       return this.draw();

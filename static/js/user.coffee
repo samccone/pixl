@@ -32,6 +32,8 @@ class window.User
     @fall()
 
   drop      : ->
+    return unless @board.isValid(@position[0], @position[1]-1)
+
     @board.addPixel @position[0], @position[1], false, @color
     @updatePosition @position[0], @position[1]-1
     @draw()
