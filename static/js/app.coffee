@@ -2,30 +2,35 @@ canvas        = document.getElementById("app")
 PIXEL         = 5
 ctx           = null
 
-socket.on "setup", ({width, height, backing}) ->
+socket.on "setup", ({width, height, backing, color, colors}) ->
   canvas.width  = width
   canvas.height = height
 
   ctx = canvas.getContext("2d")
 
-  BOARD = new Board(canvas.width, canvas.height, backing)
+  BOARD = new Board(canvas.width, canvas.height, backing, colors)
 
   USER = new User({
-    board: BOARD
+    board: BOARD,
+    color: color
   })
 
 class Board
-  constructor: (@width, @height, backing) ->
+  constructor: (@width, @height, backing, @colors) ->
     @backing = new Uint8ClampedArray(backing)
 
     @reDraw()
-    socket.on("addPixel", ({x, y}) => @addPixel(x, y, true))
-    socket.on("removePixel", ({x, y}) => @removePixel(x, y, true))
+    socket.on("addPixel", ({x, y, color}) => @addPixel(x, y, true, color))
+    socket.on("removePixel", ({x, y, color}) => @removePixel(x, y, true, color))
 
   reDraw: ->
     for i in [0...@backing.length]
       if (@backing[i])
-        @addPixel((i) % @width, Math.floor((i) / @width))
+        x     = (i) % @width
+        y     = Math.floor((i) / @width)
+        color = @colors[x + (y) * @width] or "#000"
+
+        @addPixel(i % @width, Math.floor((i) / @width), true, color)
 
   getPixel: (x, y) ->
     p = x + (y * @width)
@@ -35,10 +40,12 @@ class Board
     @backing[@getPixel(arguments...)] = 0
     socket.emit("removePixel", {x: x, y: y}) unless silent
 
-  addPixel: (x, y, silent=false) ->
+  addPixel: (x, y, silent=false, color="#000") ->
+    ctx.fillStyle = color
     ctx.fillRect x * PIXEL, y * PIXEL, PIXEL, PIXEL
     @backing[@getPixel(arguments...)] = 1
-    socket.emit("addPixel", {x: x, y: y}) unless silent
+
+    socket.emit("addPixel", {x: x, y: y, color: color}) unless silent
 
   isWithinBounds: (x, y) ->
     if x < 0 or y < 0 then return false
@@ -55,12 +62,12 @@ class User
   position: [0, 0]
   lastPosition: [0, 0]
 
-  constructor: ({@board}) ->
+  constructor: ({@board, @color}) ->
     @addListeners()
     @draw @positions...
 
   draw: ->
-    @board.addPixel @position...
+    @board.addPixel @position..., false, @color
 
   updatePosition: (x, y) ->
     @lastPosition = @position
@@ -85,8 +92,8 @@ class User
     @fall()
 
   drop      : ->
-    @board.addPixel(@position[0], @position[1])
-    @updatePosition(@position[0], @position[1]-1)
+    @board.addPixel @position[0], @position[1], false, @color
+    @updatePosition @position[0], @position[1]-1
     @draw()
 
   fall: ->
