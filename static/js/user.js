@@ -26,14 +26,22 @@
       return this;
     };
 
+    User.prototype.digMove = function(x, y) {
+      if (!this.board.isEmpty(x, y) && this.board.isWithinBounds(x, y)) {
+        this.board.removePixel(x, y);
+      }
+      return this;
+    };
+
     User.prototype.move = function(x, y) {
       var _ref;
       if (!this.board.isValid(x, y)) {
-        return;
+        return this;
       }
       this.updatePosition.apply(this, arguments);
       (_ref = this.board).removePixel.apply(_ref, this.lastPosition);
-      return this.draw();
+      this.draw();
+      return this;
     };
 
     User.prototype.moveUp = function() {
@@ -48,27 +56,21 @@
     User.prototype.moveDown = function() {
       var newPos;
       newPos = [this.position[0], this.position[1] + 1];
-      if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
-        this.board.removePixel.apply(this.board, newPos);
-      }
+      this.digMove.apply(this, newPos);
       return this.move.apply(this, newPos).fall();
     };
 
     User.prototype.moveLeft = function() {
       var newPos;
       newPos = [this.position[0] - 1, this.position[1]];
-      if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
-        this.board.removePixel.apply(this.board, newPos);
-      }
+      this.digMove.apply(this, newPos);
       return this.move.apply(this, newPos).fall();
     };
 
     User.prototype.moveRight = function() {
       var newPos;
       newPos = [this.position[0] + 1, this.position[1]];
-      if (!this.board.isEmpty.apply(this.board, newPos) && this.board.isWithinBounds.apply(this.board, newPos)) {
-        this.board.removePixel.apply(this.board, newPos);
-      }
+      this.digMove.apply(this, newPos);
       return this.move.apply(this, newPos).fall();
     };
 

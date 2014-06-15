@@ -16,49 +16,45 @@ class window.User
     @position = [x, y]
     @
 
+  digMove: (x, y) ->
+    @board.removePixel(x,y) if (!@board.isEmpty(x,y) and @board.isWithinBounds(x,y))
+    @
+
   move: (x, y) ->
-    return unless @board.isValid(x, y)
+    return @ unless @board.isValid(x, y)
 
     @updatePosition arguments...
     @board.removePixel @lastPosition...
     @draw()
+    @
 
   moveUp    : ->
     newPos = [@position[0], @position[1]-1]
 
     if (@canMoveUp())
       @board.removePixel.apply(@board, newPos)
-      @move.apply(@, newPos)
+      @move(newPos...)
       .fall()
 
   moveDown  : ->
     newPos = [@position[0], @position[1]+1]
 
-    if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
-      @board.removePixel.apply(@board, newPos)
-
-    @move
-    .apply(@, newPos)
+    @digMove(newPos...)
+    @move(newPos...)
     .fall()
 
   moveLeft  : ->
     newPos = [@position[0]-1, @position[1]]
 
-    if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
-      @board.removePixel.apply(@board, newPos)
-
-    @move
-    .apply(@, newPos)
+    @digMove(newPos...)
+    @move(newPos...)
     .fall()
 
   moveRight : ->
     newPos = [@position[0]+1, @position[1]]
 
-    if (!@board.isEmpty.apply(@board, newPos) and @board.isWithinBounds.apply(@board, newPos))
-      @board.removePixel.apply(@board, newPos)
-
-    @move
-    .apply(@, newPos)
+    @digMove(newPos...)
+    @move(newPos...)
     .fall()
 
   canMoveUp: ->
