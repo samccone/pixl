@@ -41,7 +41,7 @@
       newPos = [this.position[0], this.position[1] - 1];
       if (this.canMoveUp()) {
         this.board.removePixel.apply(this.board, newPos);
-        return this.move.apply(this, newPos);
+        return this.move.apply(this, newPos).fall();
       }
     };
 

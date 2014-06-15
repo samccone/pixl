@@ -29,6 +29,7 @@ class window.User
     if (@canMoveUp())
       @board.removePixel.apply(@board, newPos)
       @move.apply(@, newPos)
+      .fall()
 
   moveDown  : ->
     newPos = [@position[0], @position[1]+1]
