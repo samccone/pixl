@@ -39,31 +39,19 @@
     };
 
     User.prototype.moveDown = function() {
-      return this.canMoveDown() && this.move(this.position[0], this.position[1] + 1);
+      return this.move(this.position[0], this.position[1] + 1);
     };
 
     User.prototype.moveLeft = function() {
-      return this.canMoveLeft() && this.move(this.position[0] - 1, this.position[1]);
+      return this.fall() && this.move(this.position[0] - 1, this.position[1]);
     };
 
     User.prototype.moveRight = function() {
-      return this.canMoveRight() && this.move(this.position[0] + 1, this.position[1]);
+      return this.fall() && this.move(this.position[0] + 1, this.position[1]);
     };
 
     User.prototype.canMoveUp = function() {
       return (!this.board.isEmpty(this.position[0] - 1, this.position[1]) || !this.board.isEmpty(this.position[0] + 1, this.position[1])) || (!this.board.isWithinBounds(this.position[0] - 1, this.position[1]) || !this.board.isWithinBounds(this.position[0] + 1, this.position[1]));
-    };
-
-    User.prototype.canMoveDown = function() {
-      return true;
-    };
-
-    User.prototype.canMoveLeft = function() {
-      return true;
-    };
-
-    User.prototype.canMoveRight = function() {
-      return true;
     };
 
     User.prototype.dig = function() {

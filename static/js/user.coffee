@@ -22,9 +22,9 @@ class window.User
     @draw()
 
   moveUp    : -> @canMoveUp() and  @move @position[0], @position[1]-1
-  moveDown  : -> @canMoveDown() and @move @position[0], @position[1]+1
-  moveLeft  : -> @canMoveLeft() and @move @position[0]-1, @position[1]
-  moveRight : -> @canMoveRight() and @move @position[0]+1, @position[1]
+  moveDown  : -> @move @position[0], @position[1]+1
+  moveLeft  : -> @fall() and @move(@position[0]-1, @position[1])
+  moveRight : -> @fall() and @move(@position[0]+1, @position[1])
 
   canMoveUp: ->
     # left or right occupied
@@ -37,10 +37,6 @@ class window.User
       !@board.isWithinBounds(@position[0]-1, @position[1]) or
       !@board.isWithinBounds(@position[0]+1, @position[1])
     )
-
-  canMoveDown: -> true
-  canMoveLeft: -> true
-  canMoveRight: -> true
 
   dig       : ->
     return if @board.isEmpty(@position[0], @position[1]+1)
